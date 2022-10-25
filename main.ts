@@ -82,10 +82,20 @@ input.onButtonPressed(Button.A, function () {
     }
 })
 input.onButtonPressed(Button.AB, function () {
-    pins.analogWritePin(AnalogPin.P0, letter_1)
-    basic.clearScreen()
-    basic.pause(100)
-    letter_1 = -1
+    if (l1_lock == 0) {
+        pins.analogWritePin(AnalogPin.P0, letter_1)
+        basic.clearScreen()
+        basic.pause(100)
+        letter_1 = -1
+        l1_lock = 1
+    } else if (l1_lock == 1) {
+        pins.analogWritePin(AnalogPin.P0, letter_2)
+        basic.clearScreen()
+        basic.pause(100)
+        letter_2 = -1
+    } else {
+    	
+    }
 })
 input.onButtonPressed(Button.B, function () {
     letter_1 += 1
@@ -171,11 +181,13 @@ input.onButtonPressed(Button.B, function () {
         letter_1 = -1
     }
 })
-input.onLogoEvent(TouchButtonEvent.Released, function () {
-    letter_1 = pins.analogReadPin(AnalogPin.P0)
-})
+let letter_2 = 0
+let l1_lock = 0
 let letter_1 = 0
 letter_1 = -1
 basic.forever(function () {
-	
+    if (letter_1 == -1) {
+        letter_1 = pins.analogReadPin(AnalogPin.P0)
+        letter_2 = pins.analogReadPin(AnalogPin.P1)
+    }
 })
